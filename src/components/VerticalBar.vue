@@ -36,11 +36,13 @@ const renderChart = () => {
     // 定义图表的数据系列，此处使用空数组占位，具体配置需要根据数据动态填充
     series: [
       {
+        // 定义一个条形图的配置
         type: 'bar',
         data: [12, 13, 11, 17, 14, 19],
         showBackground: true,
         backgroundStyle: {
           color: 'rgba(180,180,180,0.2)'
+
         },
         itemStyle: {
           color: '#5D98CE',
