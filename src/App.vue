@@ -15,7 +15,6 @@ import {getVisualization} from "./api/visualization.js";
 const data = ref();
 const getData = async () => {
   data.value = await getVisualization()
-  console.log(data.value)
 }
 getData()
 
@@ -26,7 +25,7 @@ setInterval(() => {
 </script>
 
 <template>
-  <div class="bg-[url('src/assets/imgs/bg.jpg')] bg-cover bg-center h-screen text-white p-5 flex overflow-hidden ">
+  <div class="bg-[url('src/assets/imgs/bg.jpg')] bg-cover bg-center h-screen text-white p-3 flex overflow-hidden ">
     <!--  左-->
     <div class="flex-1 mr-5 bg-opacity-50 bg-slate-800 p-3 flex flex-col">
       <!--横向柱状图-->

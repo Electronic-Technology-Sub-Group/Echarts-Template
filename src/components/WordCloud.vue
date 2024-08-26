@@ -8,7 +8,6 @@ const props = defineProps({
     required: true
   }
 })
-console.log(props.data)
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
