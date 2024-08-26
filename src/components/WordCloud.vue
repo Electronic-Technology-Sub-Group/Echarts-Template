@@ -1,7 +1,14 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
+const props = defineProps({
+  data:{
+    type: Object,
+    required: true
+  }
+})
+console.log(props.data)
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
@@ -10,29 +17,6 @@ onMounted(() => {
   renderChart()
 })
 // 2.构建option配置对象
-const data = [
-  {name: '数据', value: 35},
-  {name: '分析', value: 76},
-  {name: '产品', value: 62},
-  {name: '设计', value: 74},
-  {name: '团队', value: 13},
-  {name: '管理', value: 23},
-  {name: '研发', value: 45},
-  {name: '市场', value: 32},
-  {name: '运营', value: 28},
-  {name: '前端', value: 56},
-  {name: '后端', value: 34},
-  {name: '测试', value: 26},
-  {name: '安全', value: 18},
-  {name: '算法', value: 15},
-  {name: '机器学习', value: 32},
-  {name: '深度学习', value: 55},
-  {name: '数据库', value: 86},
-  {name: '云计算', value: 63},
-  {name: '大数据', value: 47},
-  {name: '物联网', value: 38},
-  {name: '区块链', value: 22},
-  {name: '人工智能', value: 64}]
 const randomRGB = () => {
   const r = Math.floor(Math.random() * 256)
   const g = Math.floor(Math.random() * 256)
@@ -58,18 +42,25 @@ series: [
             color: '#000' // 强调时的颜色，黑色
           }
         },
-        data: data // 词云图的数据
+        data: props.data.datas
       }]
   }
 
   // 3.通过实例.setOptions(option)
   mChart.setOption(options)
 }
+
+watch(
+    () => props.data,
+    () => {
+      renderChart()
+    }
+)
 </script>
 
 <template>
   <div>
-    <div>【数据云图】</div>
+    <div>【关键词条】</div>
     <div ref="target" class="w-full h-full"></div>
   </div>
 </template>

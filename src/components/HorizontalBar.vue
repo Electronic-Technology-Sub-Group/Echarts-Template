@@ -1,7 +1,12 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
-
+const props = defineProps({
+  data:{
+    type: Object,
+    required:true,
+  }
+})
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
@@ -23,7 +28,7 @@ const renderChart = () => {
     // 定义y轴的相关配置
     yAxis: {
       type: 'category',
-      data: ['北京', '上海', '广州', '深圳', '成都', '西安'],
+      data: props.data.regions.map(item=>item.name),
       inverse: true,
       axisLine: {
         show: false
@@ -46,14 +51,10 @@ const renderChart = () => {
     // 定义图表的数据系列，此处使用空数组占位，具体配置需要根据数据动态填充
     series: [{
       type: 'bar',
-      data: [
-        {value: 200, name: '北京'},
-        {value: 300, name: '上海'},
-        {value: 430, name: '广州'},
-        {value: 520, name: '深圳'},
-        {value: 200, name: '成都'},
-        {value: 600, name: '西安'},
-      ],
+      data: props.data.regions.map(item=>({
+        name: item.name,
+        value: item.value
+      })),
       showBackground: true,
       backgroundStyle: {
         color: 'rgba(180,180,180,0.2)'
@@ -77,6 +78,13 @@ const renderChart = () => {
   // 3.通过实例.setOptions(option)
   mChart.setOption(options)
 }
+
+watch(
+    () => props.data,
+    () => {
+      renderChart()
+    }
+)
 </script>
 
 <template>

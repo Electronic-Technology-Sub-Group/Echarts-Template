@@ -1,7 +1,12 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
-
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+})
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
@@ -16,7 +21,7 @@ const options = {
     // x轴配置
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      data: props.data.servers.map((item) => item.name),
     },
     // y轴配置
     yAxis: {
@@ -38,7 +43,10 @@ const options = {
     series: [
       {
         type: 'bar',
-        data: [12, 13, 11, 17, 14, 19],
+        data: props.data.servers.map((item) => ({
+          name: item.name,
+          value: item.value
+        })),
         showBackground: true,
         backgroundStyle: {
           color: 'rgba(180,180,180,0.2)'
@@ -67,11 +75,18 @@ const options = {
   // 3.通过实例.setOptions(option)
   mChart.setOption(options)
 }
+
+watch(
+    () => props.data,
+    () => {
+      renderChart()
+    }
+)
 </script>
 
 <template>
   <div>
-    <div>资源服务占比</div>
+    <div>【资源服务占比】</div>
     <div ref="target" class="w-full h-full"></div>
   </div>
 </template>

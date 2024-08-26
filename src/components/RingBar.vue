@@ -1,7 +1,12 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
-
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+})
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
@@ -13,21 +18,17 @@ onMounted(() => {
 const getSeriesData = () => {
   const series = []
 
-  let item = ['正常值', '预警值', '超额值', '超标值', '异常值']
-  item.forEach((value, index) => {
+  props.data.abnormals.forEach((item, index) => {
     // 上层
     series.push({
-      name: value,
+      name: item.name,
       type: 'pie',
       clockwise: false,
       hoverAnimation: false,
       radius: [73 - index * 15 + '%', 68 - index * 15 + '%'],
       center: ['55%', '55%'],
       data: [
-        {
-          value: ( index + 1 ) * 200,
-          name: value
-        },
+        { value: item.value, name: item.name },
         {
           value: 800,
           itemStyle: {
@@ -44,7 +45,7 @@ const getSeriesData = () => {
     })
     // 下层
     series.push({
-      name: value,
+      name: item.name,
       type: 'pie',
       silent: true,
       z: 1,
@@ -96,7 +97,7 @@ const renderChart = () => {
       icon: 'circle',
       top: '8%',
       left: '60%',
-      data: ['异常值', '正常值', '预警值', '超额值', '超标值'],
+      data: props.data.abnormals.map(item => item.name),
       width: '-5',
       itemWidth: 10,
       itemHeight: 10,
@@ -131,6 +132,13 @@ const renderChart = () => {
 
   mChart.setOption(options)
 }
+
+watch(
+    () => props.data,
+    () => {
+      renderChart()
+    }
+)
 </script>
 
 <template>

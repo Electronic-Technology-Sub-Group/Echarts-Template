@@ -1,7 +1,12 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
-
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+})
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
@@ -44,14 +49,10 @@ const renderChart = () => {
         }
       },
       // 指示器文字
-      indicator :[
-        {name: '风险值', max: 100},
-        {name: '安全值', max: 100},
-        {name: '可靠性值', max: 100},
-        {name: '效率值', max: 100},
-        {name: '稳定性值', max: 100},
-        {name: '成本值', max: 100}
-      ],
+      indicator: props.data.risks.map(item=>({
+        name: item.name,
+        max: 100
+      })),
       // 不展示拆分区域
       splitArea: {
         show: false
@@ -138,8 +139,7 @@ const renderChart = () => {
         // 数据
         data: [
           {
-            value: [63, 70, 60, 50, 63, 53],
-            name: '风险值'
+            value: props.data.risks.map(item=>item.value)
           }
         ]
       }
@@ -148,6 +148,13 @@ const renderChart = () => {
 
   mChart.setOption(options)
 }
+
+watch(
+    () => props.data,
+    () => {
+      renderChart()
+    }
+)
 </script>
 
 <template>
