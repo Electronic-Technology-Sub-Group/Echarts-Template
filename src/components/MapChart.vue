@@ -18,8 +18,10 @@ onMounted(() => {
 } )
 // 2.构建option配置对象
 const renderChart = () => {
-  // 配置图表选项的对象
-  const options = {
+  // echarts 渲染
+  echarts.registerMap('china', mapJson)
+
+  let options = {
     // 时间线，提供了在多个 ECharts option 间进行切换
     timeline: {
       // 数据
@@ -87,12 +89,20 @@ const renderChart = () => {
         bottom: '10%',
         width: '20%'
       },
+
+      // 中国地图
       geo: {
+        // 展示
         show: true,
+        // 中国地图
         map: 'china',
+        // 开启缩放
         roam: true,
+        // 初始缩放
         zoom: 0.8,
-        center:[113.83531246, 34.0267395887],
+        // 中心点
+        center: [113.83531246, 34.0267395887],
+        // 默认状态的省份样式
         itemStyle: {
           normal: {
             // 边框色值
@@ -130,10 +140,12 @@ const renderChart = () => {
         }
       }
     },
+    // 绑定时间轴的多个图表
     options: []
-
   }
-  props.data.voltageLevel.forEach((item,index) => {
+
+  // 为每一年度的图表添加数据
+  props.data.voltageLevel.forEach((item, index) => {
     options.options.push({
       // 背景色
       backgroundColor: '#142037',
@@ -272,7 +284,7 @@ const renderChart = () => {
       ]
     })
   })
-  // 3.通过实例.setOptions(option)
+
   mChart.setOption(options)
 }
 

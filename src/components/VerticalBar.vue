@@ -16,66 +16,72 @@ onMounted(() => {
 } )
 // 2.构建option配置对象
 const renderChart = () => {
- // 配置图表选项的对象
-const options = {
-    // x轴配置
+  const options = {
+    // X 轴展示选项
     xAxis: {
       type: 'category',
+      // 根据根据服务端数据筛选
       data: props.data.servers.map((item) => item.name),
-    },
-    // y轴配置
-    yAxis: {
-      type: 'value',
-      show: false,
-      max: function(value){
-        return parseInt(value.max * 1.2);
+      // 文字色值
+      axisLabel: {
+        color: '#9EB1C8'
       }
     },
-    // 网格配置
+    // Y 轴展示数据
+    yAxis: {
+      // 数据展示
+      type: 'value',
+      // 不显示轴
+      show: false,
+      // 最大值（防止触顶）
+      max: function (value) {
+        // 取整
+        return parseInt(value.max * 1.2)
+      }
+    },
+    // echarts 网格绘制的位置，对应 上、右、下、左
     grid: {
-      top: 26,
+      top: 16,
       right: 0,
-      bottom: 15,
+      bottom: 26,
       left: -26,
+      // 计算边距时，包含标签
       containLabel: true
     },
-    // 系列配置
-    series: [
-      {
-        type: 'bar',
-        data: props.data.servers.map((item) => ({
-          name: item.name,
-          value: item.value
-        })),
-        showBackground: true,
-        backgroundStyle: {
-          color: 'rgba(180,180,180,0.2)'
-
+    // 柱形图核心配置
+    series: {
+      // 柱形图
+      type: 'bar',
+      // 数据筛选
+      data: props.data.servers.map((item) => ({
+        name: item.name,
+        value: item.value
+      })),
+      // 每个轴的样式
+      itemStyle: {
+        color: '#479AD3', // 设置柱子的颜色
+        barBorderRadius: 5, // 设置柱子的圆角
+        shadowColor: 'rgba(0, 0, 0, 0.3)', // 设置柱子的阴影颜色
+        shadowBlur: 5 // 设置柱子的阴影模糊大小
+      },
+      // 柱子宽度
+      barWidth: 12,
+      // 文本
+      label: {
+        show: true,
+        // 设置标签位置为右侧
+        position: 'top',
+        textStyle: {
+          // 设置标签文本颜色
+          color: '#fff'
         },
-        itemStyle: {
-          color: '#5D98CE',
-          barBorderRadius: 5,
-          shadowColor: 'rgba(0,0,0,0.3)',
-          shadowBlur: 5
-        },
-        barWidth: 12,
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#fff'
-          },
-          formatter: '{c}%'
-
-        }
+        formatter: '{c}%'
       }
-    ]
-
+    }
   }
-  // 3.通过实例.setOptions(option)
+
   mChart.setOption(options)
 }
-
 watch(
     () => props.data,
     () => {
