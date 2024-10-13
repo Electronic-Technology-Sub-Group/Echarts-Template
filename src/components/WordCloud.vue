@@ -2,8 +2,9 @@
 import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
 import 'echarts-wordcloud'
+
 const props = defineProps({
-  data:{
+  data: {
     type: Object,
     required: true
   }
@@ -25,11 +26,11 @@ const randomRGB = () => {
 const renderChart = () => {
   const options = {
     // 定义一个词云图配置对象
-series: [
+    series: [
       {
-        type:'wordCloud', // 图表类型为词云图
+        type: 'wordCloud', // 图表类型为词云图
         sizeRange: [12, 60], // 词云图中词语的大小范围
-        rotationRange:[0,0], // 词云图中词语的旋转角度范围
+        rotationRange: [0, 0], // 词云图中词语的旋转角度范围
         gridSize: 0, // 词云图中词语之间的网格大小
         layoutAnimation: true, // 是否开启布局动画
         textStyle: {

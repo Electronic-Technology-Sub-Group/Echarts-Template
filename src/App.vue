@@ -18,9 +18,11 @@ const getData = async () => {
 }
 getData()
 
-setInterval(() => {
-  getData()
-}, 5000)
+
+// 每五秒更新一下数据
+// setInterval(() => {
+//   getData()
+// }, 5000)
 
 </script>
 

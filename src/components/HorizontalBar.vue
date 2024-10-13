@@ -1,19 +1,20 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts'
+
 const props = defineProps({
-  data:{
+  data: {
     type: Object,
-    required:true,
+    required: true,
   }
 })
 // 1.初始Echarts实例对象
 let mChart = null
 const target = ref(null);
 onMounted(() => {
-  mChart =  echarts.init(target.value)
+  mChart = echarts.init(target.value)
   renderChart()
-} )
+})
 // 2.构建option配置对象
 const renderChart = () => {
   const options = {
@@ -111,7 +112,7 @@ watch(
 <template>
   <div>
     <div>【大区数据信息 - 按行业分类】</div>
-    <div ref="target" class="w-full h-full"> </div>
+    <div ref="target" class="w-full h-full"></div>
   </div>
 </template>
 
